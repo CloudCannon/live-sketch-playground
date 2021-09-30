@@ -10,7 +10,9 @@
         /* Script inlined here for demonstration purposes */
         const canvas = document.querySelector("#art");
         const title = document.querySelector(".art-title");
+        const help = document.querySelector(".help");
         const signaturePad = new SignaturePad(canvas);
+        signaturePad.off();
 
         try {
             const existingSig = JSON.parse("{{.Params.art_code_block}}");
@@ -21,6 +23,8 @@
             console.log("Registered CloudCannon");
             CloudCannon.enableEvents();
             console.log("Enabled Events");
+            help.classList.add("show");
+            signaturePad.on();
 
             let sentAt = Date.now();
 
