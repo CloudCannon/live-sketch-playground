@@ -17,9 +17,12 @@
         } catch(e) {}
 
         const liveEditing = (CloudCannon) => {
+            console.log("Registered CloudCannon");
             CloudCannon.enableEvents();
+            console.log("Enabled Events");
 
             document.addEventListener('cloudcannon:update', async function (e) {
+                console.log("Got an update from CloudCannon");
                 try {
                     const latestValue = await e.detail.CloudCannon.value();
                     signaturePad.fromData(JSON.parse(latestValue?.art_code_block));
