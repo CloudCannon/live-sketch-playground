@@ -21,7 +21,10 @@
             CloudCannon.enableEvents();
             console.log("Enabled Events");
 
+            let sentAt = Date.now();
+
             document.addEventListener('cloudcannon:update', async function (e) {
+                if (Date.now() - sentAt < 500) return;
                 console.log("Got an update from CloudCannon");
                 try {
                     const latestValue = await e.detail.CloudCannon.value();
@@ -34,6 +37,7 @@
                 const data = signaturePad.toData();
                 CloudCannon.set('art_code_block', JSON.stringify(data));
                 console.log("Sent", data);
+                sentAt = Date.now();
             });
         }
 
