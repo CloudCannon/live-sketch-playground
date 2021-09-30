@@ -1,3 +1,9 @@
 {{ define "main" }}
-	<h1>Hello</h1>
+	<h1>Welcome to my gallery :-)</h1>
+	<p>Check out some art!</p>
+	<ul>
+		{{ range .Site.RegularPages }}
+			<li><h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2></li>
+        {{ end }}
+	</ul>
 {{ end }}
