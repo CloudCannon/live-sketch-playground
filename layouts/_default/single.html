@@ -1,0 +1,42 @@
+{{ define "main" }}
+    <h1 class="art-title">"{{.Title}}"</h1>
+
+    <canvas id="art" 
+            width="500" 
+            height="500" ></canvas>
+
+    <script>
+        /* Script inlined here for demonstration purposes */
+        var canvas = document.querySelector("#art");
+        var signaturePad = new SignaturePad(canvas);
+
+        try {
+            const existingSig = JSON.parse("{{.Params.art_code_block}}");
+            signaturePad.fromData(existingSig);
+        } catch(e) {}
+
+        const liveEditing = (CloudCannon) => {
+            CloudCannon.enableEvents();
+
+            document.addEventListener('cloudcannon:update', async function (e) {
+                try {
+                    const latestValue = await e.detail.CloudCannon.value();
+                    signaturePad.fromData(JSON.parse(latestValue));
+                } catch(e) {}
+            });
+
+            canvas.addEventListener("mousemove", () => {
+                const data = signaturePad.toData();
+                CloudCannon.set('art_code_block', JSON.stringify(data));
+            });
+        }
+
+        if (!window.CloudCannon) {
+            document.addEventListener('cloudcannon:load', function (e) {
+                liveEditing(e.details.CloudCannon);
+            });
+        } else {
+            liveEditing(window.CloudCannon);
+        }
+    </script>
+{{ end }}
