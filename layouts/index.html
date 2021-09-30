@@ -3,7 +3,9 @@
 	<p>Check out some art!</p>
 	<ul>
 		{{ range .Site.RegularPages }}
+			{{ if .Title }}
 			<li><h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2></li>
+			{{ end }}
         {{ end }}
 	</ul>
 {{ end }}
