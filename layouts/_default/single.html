@@ -7,8 +7,9 @@
 
     <script>
         /* Script inlined here for demonstration purposes */
-        var canvas = document.querySelector("#art");
-        var signaturePad = new SignaturePad(canvas);
+        const canvas = document.querySelector("#art");
+        const title = document.querySelector(".art-title");
+        const signaturePad = new SignaturePad(canvas);
 
         try {
             const existingSig = JSON.parse("{{.Params.art_code_block}}");
@@ -21,13 +22,15 @@
             document.addEventListener('cloudcannon:update', async function (e) {
                 try {
                     const latestValue = await e.detail.CloudCannon.value();
-                    signaturePad.fromData(JSON.parse(latestValue));
+                    signaturePad.fromData(JSON.parse(latestValue?.art_code_block));
+                    title.innerHTML = latestValue?.title;
                 } catch(e) {}
             });
 
             canvas.addEventListener("mousemove", () => {
                 const data = signaturePad.toData();
                 CloudCannon.set('art_code_block', JSON.stringify(data));
+                console.log("Sent", data);
             });
         }
 
