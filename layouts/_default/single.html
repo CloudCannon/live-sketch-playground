@@ -29,7 +29,7 @@
                 try {
                     const latestValue = await e.detail.CloudCannon.value();
                     signaturePad.fromData(JSON.parse(latestValue?.art_code_block));
-                    title.innerHTML = latestValue?.title;
+                    title.innerHTML = `${latestValue?.title}`;
                 } catch(e) {}
             });
 
