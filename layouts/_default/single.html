@@ -39,7 +39,7 @@
 
         if (!window.CloudCannon) {
             document.addEventListener('cloudcannon:load', function (e) {
-                liveEditing(e.details.CloudCannon);
+                liveEditing(e.detail.CloudCannon);
             });
         } else {
             liveEditing(window.CloudCannon);
