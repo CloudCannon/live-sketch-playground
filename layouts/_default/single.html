@@ -3,7 +3,7 @@
 
     <canvas id="art" 
             width="500" 
-            height="500" ></canvas>
+            height="500" style="background-color: '{{.Params.background_color}}';"></canvas>
     <p class="help">👆 Draw here</p>
 
     <script>
@@ -12,19 +12,17 @@
         const title = document.querySelector(".art-title");
         const help = document.querySelector(".help");
         const signaturePad = new SignaturePad(canvas);
-        signaturePad.off();
-
-        const rewriteColor = (str, col) => {
-            return str.replace(/("|\\u0022)color("|\\u0022):("|\\u0022)[^"\\]+("|\\u0022)/g, `"color":"${col.toLowerCase()}"`);
-        }
 
         try {
             let drawing = "{{.Params.art_code_block}}";
             const color = "{{.Params.color}}" || "black";
-            drawing = rewriteColor(drawing, color);
             const existingSig = JSON.parse(drawing);
             signaturePad.fromData(existingSig);
+            signaturePad.penColor = color.toLowerCase();
+            canvas.style.backgroundColor = "{{.Params.background_color}}".toLowerCase() || "white";
         } catch(e) {}
+
+        signaturePad.off();
 
         const liveEditing = (CloudCannon) => {
             console.log("Registered CloudCannon");
@@ -42,8 +40,9 @@
                     const latestValue = await e.detail.CloudCannon.value();
                     let drawing = latestValue?.art_code_block || [];
                     const color = latestValue?.color || "black";
-                    drawing = rewriteColor(drawing, color);
                     signaturePad.fromData(JSON.parse(drawing));
+                    signaturePad.penColor = color.toLowerCase();
+                    canvas.style.backgroundColor = latestValue?.background_color?.toLowerCase() || "white";
                     title.innerHTML = `${latestValue?.title}`;
                 } catch(e) {}
             });
