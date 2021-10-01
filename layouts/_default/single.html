@@ -36,7 +36,10 @@
                 console.log("Got an update from CloudCannon");
                 try {
                     const latestValue = await e.detail.CloudCannon.value();
-                    signaturePad.fromData(JSON.parse(latestValue?.art_code_block));
+                    let drawing = latestValue?.art_code_block || [];
+                    const color = latestValue?.color || "black";
+                    drawing = drawing.replace(/black/g, color.toLowerCase());
+                    signaturePad.fromData(JSON.parse(drawing));
                     title.innerHTML = `${latestValue?.title}`;
                 } catch(e) {}
             });
