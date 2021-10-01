@@ -2,7 +2,7 @@
 title: 
 color: black
 background_color: white
-width: Medium
+# width: Medium
 art_code_block: >-
   []
 ---
