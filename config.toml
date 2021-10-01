@@ -4,3 +4,6 @@ title = "Live Editing Demonstration"
 
 [cloudcannon.collections.art]
 _enabled_editors = ["visual"]
+
+[_select_data]
+colors = ["Black", "Blue", "Red", "Green"]
