@@ -15,7 +15,10 @@
         signaturePad.off();
 
         try {
-            const existingSig = JSON.parse("{{.Params.art_code_block}}");
+            let drawing = "{{.Params.art_code_block}}";
+            const color = "{{.Params.color}}" || "black";
+            drawing = drawing.replace(/black/g, color.toLowerCase());
+            const existingSig = JSON.parse(drawing);
             signaturePad.fromData(existingSig);
         } catch(e) {}
 
