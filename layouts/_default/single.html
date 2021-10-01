@@ -14,10 +14,14 @@
         const signaturePad = new SignaturePad(canvas);
         signaturePad.off();
 
+        const rewriteColor = (str, col) => {
+            return str.replace(/("|\\u0022)color("|\\u0022):("|\\u0022)[^"\\]+("|\\u0022)/g, `"color":"${col.toLowerCase()}"`);
+        }
+
         try {
             let drawing = "{{.Params.art_code_block}}";
             const color = "{{.Params.color}}" || "black";
-            drawing = drawing.replace(/black/g, color.toLowerCase());
+            drawing = rewriteColor(drawing, color);
             const existingSig = JSON.parse(drawing);
             signaturePad.fromData(existingSig);
         } catch(e) {}
@@ -38,7 +42,7 @@
                     const latestValue = await e.detail.CloudCannon.value();
                     let drawing = latestValue?.art_code_block || [];
                     const color = latestValue?.color || "black";
-                    drawing = drawing.replace(/black/g, color.toLowerCase());
+                    drawing = rewriteColor(drawing, color);
                     signaturePad.fromData(JSON.parse(drawing));
                     title.innerHTML = `${latestValue?.title}`;
                 } catch(e) {}
